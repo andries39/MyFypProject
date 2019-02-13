@@ -45,6 +45,7 @@ public class RangingActivity extends Activity implements BeaconConsumer {
                 boolean a = true;
 
                 try {
+                    /*
                     FileOutputStream fos = openFileOutput(FILENAME,MODE_PRIVATE);
                     fos.write(string.getBytes());
                     fos.close();
@@ -56,12 +57,16 @@ public class RangingActivity extends Activity implements BeaconConsumer {
                     while ((line = bufferedReader.readLine()) != null) {
                         sb.append(line);
                     }
+                    */
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 if (beacons.size() > 0) {
                     Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
+                    Log.i(TAG," id1= " +beacons.iterator().next().getId1()+"  id2= "+beacons.iterator().next().getId2()+"  id3= "+beacons.iterator().next().getId3());
+                    Log.i(TAG,"Rssi: "+beacons.iterator().next().getRssi());
+
                 }
             }
         });
