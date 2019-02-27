@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "587175696215",
+    "firebase_url": "https://ibeacon-231b4.firebaseio.com",
+    "project_id": "ibeacon-231b4",
+    "storage_bucket": "ibeacon-231b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587175696215:android:90955fc3c49550dc",
+        "android_client_info": {
+          "package_name": "yalantis.com.sidemenu.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587175696215-rpeggspmrbdgkp601jrd30if1ql4u9um.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "yalantis.com.sidemenu.sample",
+            "certificate_hash": "65a1bb6b11b8a07d566f8a50ce1282377a45cbbb"
+          }
+        },
+        {
+          "client_id": "587175696215-i9nd404tb48hbl3fhkh5f1mgjherd28h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXDJsHpHZCSAwuur6NqTy868VmJTOPXOk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587175696215-i9nd404tb48hbl3fhkh5f1mgjherd28h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
