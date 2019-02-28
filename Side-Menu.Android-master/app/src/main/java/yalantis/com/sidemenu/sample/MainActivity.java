@@ -247,12 +247,15 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
                 //return replaceFragment(screenShotable, position)
                 Log.i("Screen","hello "+slideMenuItem.getName());
                 onBeaconServiceConnect();
+
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference docRef = db.collection("ibeacon").document("beacon001");
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         String testA = documentSnapshot.getString("desctiption");
+                        TextView a= (TextView)findViewById(R.id.test_txt);
+                        a.setText(testA);
                         Log.i("database test","Test~~~~~---- "+testA);
                     }
                 });
@@ -261,8 +264,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
 
 
 
-                TextView a= (TextView)findViewById(R.id.test_txt);
-                a.setText("My Awesome Text");
+
+
 
 
                 return screenShotable;
