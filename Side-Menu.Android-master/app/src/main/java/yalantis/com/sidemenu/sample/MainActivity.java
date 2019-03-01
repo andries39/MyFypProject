@@ -36,6 +36,8 @@ import org.altbeacon.beacon.BeaconParser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.codetail.animation.ViewAnimationUtils;
@@ -197,35 +199,40 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
     public void onBeaconServiceConnect() {
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                Log.i(TAG,"Beacon size:"+beacons.size());
+            public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
+                Log.i(TAG,"Beacon size:"+collection.size());
                 String FILENAME = "hello_file";
                 String string = "hello world!";
                 boolean a = true;
 
-                try {
-                    /*
-                    FileOutputStream fos = openFileOutput(FILENAME,MODE_PRIVATE);
-                    fos.write(string.getBytes());
-                    fos.close();
-                    FileInputStream abc = openFileInput(FILENAME);
-                    InputStreamReader inputStreamReader = new InputStreamReader(abc);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        sb.append(line);
+                if (collection.size() > 0) {
+                    //符合要求的beacon集合
+
+                    List<Beacon> beacons = new ArrayList<>();
+                    for (Beacon beacon : collection) {
+//                        判断该beacon的UUID是否为我们感兴趣的
+                       if (beacon.getId1().toString().equalsIgnoreCase("fda50693-a4e2-4fb1-afcf-c6eb07647855")){
+//                            是则添加到集合
+                            beacons.add(beacon);
+                       }
                     }
-                    */
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                if (beacons.size() > 0) {
-                    Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
-                    Log.i(TAG," id1= " +beacons.iterator().next().getId1()+"  id2= "+beacons.iterator().next().getId2()+"  id3= "+beacons.iterator().next().getId3());
-                    Log.i(TAG,"Rssi: "+beacons.iterator().next().getRssi());
+                    if (beacons.size() > 0) {
+                        //                    给收集到的beacons按rssi的信号强弱排序
+                        Log.i(TAG,"Heloo: "+"test123~~~~~~~~~~~~~~~~~~~~");
+                        Collections.sort(beacons, new Comparator<Beacon>() {
+                            public int compare(Beacon arg0, Beacon arg1) {
+                                return arg1.getRssi()-arg0.getRssi();
+                            }
+                        });
+                        Beacon nearBeacon = beacons.get(0);
+                        TextView rssi= (TextView)findViewById(R.id.rssi);
+                        rssi.setText("Rssi: "+nearBeacon.getRssi());
+                        Log.i(TAG, "The first beacon I see is about "+nearBeacon.getDistance()+" meters away.");
+                        Log.i(TAG," id1= " +nearBeacon.getId1()+"  id2= "+nearBeacon.getId2()+"  id3= "+nearBeacon.getId3());
+                        Log.i(TAG,"Rssi: "+nearBeacon.getRssi());
 
+                    }
                 }
             }
         });
@@ -253,10 +260,10 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
                 docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String testA = documentSnapshot.getString("desctiption");
-                        TextView a= (TextView)findViewById(R.id.test_txt);
-                        a.setText(testA);
-                        Log.i("database test","Test~~~~~---- "+testA);
+                        String des = documentSnapshot.getString("desctiption");
+                        TextView desctiption= (TextView)findViewById(R.id.desctiption);
+                        desctiption.setText(des);
+                        Log.i("database test","Test~~~~~---- "+des);
                     }
                 });
 
