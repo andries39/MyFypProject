@@ -1,19 +1,11 @@
 package yalantis.com.sidemenu.sample;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import org.altbeacon.beacon.*;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.util.Collection;
 
 public class RangingActivity extends Activity implements BeaconConsumer {

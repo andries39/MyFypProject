@@ -25,44 +25,25 @@
             android:orientation="vertical"
             >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
-                android:gravity="center"
-                android:text="courseName"
-                android:id="@+id/courseName"/>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/proCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="proCode" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="desctiption!"
-                android:id="@+id/desctiption" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Campus"
-                android:id="@+id/Campus"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="r"
-                android:id="@+id/rssi"/>
         </LinearLayout>
+
+
+
+            <FrameLayout
+                android:id="@+id/frameLay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="55dp"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="660dp"
+                    app:srcCompat="@drawable/leomaz" />
+            </FrameLayout>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

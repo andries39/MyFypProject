@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInFragment"
+    android:background="@drawable/bk">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Sign-in event"
+            android:textSize="20dp"
+            android:id="@+id/signInTitle"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/r1"
+            android:orientation="vertical"
+            android:layout_below="@+id/signInTitle"
+            android:layout_marginTop="15dp"
+            >
+
+
+            <TextView
+                android:id="@+id/beacon001Name"
+                android:layout_width="320dp"
+                android:layout_height="50dp"
+                android:text=""
+                android:gravity="center_vertical"
+
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/beacon001Name"
+                android:enabled="false"
+                android:buttonTint="#1E1D1D"
+
+                android:id="@+id/beacon001CheckBox"
+                />
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/r2"
+        android:orientation="vertical"
+        android:layout_below="@+id/r1"
+        >
+
+
+        <TextView
+            android:id="@+id/beacon002Name"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:text=""
+            android:gravity="center_vertical"
+
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/beacon002Name"
+            android:enabled="false"
+            android:id="@+id/beacon002CheckBox"
+            android:buttonTint="#1E1D1D"
+            />
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/r3"
+            android:orientation="vertical"
+            android:layout_below="@+id/r2"
+            >
+
+
+            <TextView
+                android:id="@+id/beacon003Name"
+                android:layout_width="320dp"
+                android:layout_height="50dp"
+                android:text=""
+                android:gravity="center_vertical"
+
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/beacon003Name"
+                android:enabled="false"
+                android:id="@+id/beacon003CheckBox"
+                android:buttonTint="#1E1D1D"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</FrameLayout>

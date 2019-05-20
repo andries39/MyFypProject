@@ -1,12 +1,14 @@
 package yalantis.com.sidemenu.sample;
 
 import android.animation.Animator;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,19 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.altbeacon.beacon.*;
 import org.altbeacon.beacon.BeaconParser;
@@ -59,18 +54,47 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
 
     protected static final String TAG = "RangingActivity";
     private BeaconManager beaconManager;
+    private SearchFragment searchFragment;
+    private FragmentManager mFragmentMgr;
+    private SignInFragment signInFragment;
+    private ViewInfoFragment viewInfoFragment;
+    private MapFragment mapFragment;
+    private int testrssi = 0;
+    private String ibeacon001_id1 = "";
+    private String ibeacon002_id1 = "";
+    private String ibeacon003_id1 = "";
 
+    private String ibeacon001_id2 = "";
+    private String ibeacon002_id2 = "";
+    private String ibeacon003_id2 = "";
 
+    private String ibeacon001_id3 = "";
+    private String ibeacon002_id3 = "";
+    private String ibeacon003_id3 = "";
+
+    private String currentPage;
+    String currentBeacon = "";
+    String newBeacon = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
+        searchFragment = new SearchFragment();
+        signInFragment = new SignInFragment();
+        viewInfoFragment = new ViewInfoFragment();
+        mapFragment = new MapFragment();
+        mFragmentMgr = getSupportFragmentManager();
+
+        setBeaconID("beacon001");
+        setBeaconID("beacon002");
+        setBeaconID("beacon003");
+
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().add(new BeaconParser().
                 setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        beaconManager.bind(this);
+        //beaconManager.bind(this);
         ContentFragment contentFragment = ContentFragment.newInstance(R.drawable.content_music);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, contentFragment)
@@ -90,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
         setActionBar();
         createMenuList();
         viewAnimator = new ViewAnimator<>(this, list, contentFragment, drawerLayout, this);
+
+        SharedPreferences pref = getSharedPreferences("beacon", MODE_PRIVATE);
+        pref.edit()
+                .putString("readBeacon", "null")
+                .commit();
     }
 
     private void createMenuList() {
@@ -201,36 +230,76 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
                 Log.i(TAG,"Beacon size:"+collection.size());
-                String FILENAME = "hello_file";
-                String string = "hello world!";
-                boolean a = true;
+
 
                 if (collection.size() > 0) {
-                    //符合要求的beacon集合
+
 
                     List<Beacon> beacons = new ArrayList<>();
                     for (Beacon beacon : collection) {
-//                        判断该beacon的UUID是否为我们感兴趣的
-                       if (beacon.getId1().toString().equalsIgnoreCase("fda50693-a4e2-4fb1-afcf-c6eb07647855")){
-//                            是则添加到集合
+//
                             beacons.add(beacon);
-                       }
+
                     }
 
                     if (beacons.size() > 0) {
-                        //                    给收集到的beacons按rssi的信号强弱排序
-                        Log.i(TAG,"Heloo: "+"test123~~~~~~~~~~~~~~~~~~~~");
+
+                        //
+                        Log.i(TAG,"Heloo: "+"test123~~~~~~~~~~~~~~~~~~~~: "+ibeacon001_id1);
                         Collections.sort(beacons, new Comparator<Beacon>() {
                             public int compare(Beacon arg0, Beacon arg1) {
                                 return arg1.getRssi()-arg0.getRssi();
                             }
                         });
-                        Beacon nearBeacon = beacons.get(0);
-                        TextView rssi= (TextView)findViewById(R.id.rssi);
-                        rssi.setText("Rssi: "+nearBeacon.getRssi());
-                        Log.i(TAG, "The first beacon I see is about "+nearBeacon.getDistance()+" meters away.");
-                        Log.i(TAG," id1= " +nearBeacon.getId1()+"  id2= "+nearBeacon.getId2()+"  id3= "+nearBeacon.getId3());
-                        Log.i(TAG,"Rssi: "+nearBeacon.getRssi());
+                            Beacon nearBeacon = beacons.get(0);
+                            if(nearBeacon.getId1().toString().equalsIgnoreCase(ibeacon002_id1)){
+                                Log.i(TAG, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                            }
+                       // TextView rssi= (TextView)findViewById(R.id.rssi);
+                        //rssi.setText("Rssi: "+nearBeacon.getRssi());
+                        if(nearBeacon.getId1().toString().equalsIgnoreCase(ibeacon001_id1)&& nearBeacon.getId2().toString().equalsIgnoreCase(ibeacon001_id2)&& nearBeacon.getId3().toString().equalsIgnoreCase(ibeacon001_id3)){
+                            searchFragment.setInfo("beacon001");
+                            mapFragment.setInfo("beacon001");
+                            signInFragment.setDistance(nearBeacon.getDistance());
+                            newBeacon = "beacon001";
+                            Log.i(TAG, "find right ibeacon001 ");
+                        }else if(nearBeacon.getId1().toString().equalsIgnoreCase(ibeacon002_id1)&& nearBeacon.getId2().toString().equalsIgnoreCase(ibeacon002_id2)&& nearBeacon.getId3().toString().equalsIgnoreCase(ibeacon002_id3)){
+                            newBeacon = "beacon002";
+                            searchFragment.setInfo("beacon002");
+                            mapFragment.setInfo("beacon002");
+                            signInFragment.setDistance(nearBeacon.getDistance());
+                            String readBeacon = "beacon002";
+                            SharedPreferences pref = getSharedPreferences("beacon", MODE_PRIVATE);
+                            pref.edit().putString("readBeacon", readBeacon).commit();
+
+                            Log.i(TAG, "find right ibeacon002");
+                        }else if(nearBeacon.getId1().toString().equalsIgnoreCase(ibeacon003_id1)&& nearBeacon.getId2().toString().equalsIgnoreCase(ibeacon003_id2)&& nearBeacon.getId3().toString().equalsIgnoreCase(ibeacon003_id3)){
+                            searchFragment.setInfo("beacon003");
+                            mapFragment.setInfo("beacon003");
+                            signInFragment.setDistance(nearBeacon.getDistance());
+                            newBeacon = "beacon003";
+                            Log.i(TAG, "find right ibeacon003");
+                        }else {
+                            Log.i(TAG, "Can not find right ibeacon ");
+                        }
+
+                        if(currentPage.equals("Building") && !currentBeacon.equals(newBeacon)){
+                            Fragment frg = null;
+                            currentBeacon = newBeacon;
+                            frg = getSupportFragmentManager().findFragmentByTag("searchFragment");
+                            getSupportFragmentManager().beginTransaction().detach(frg).attach(frg).commit();
+                        }else if(currentPage.equals("Paint")){
+                            Fragment frg = null;
+
+                            frg = getSupportFragmentManager().findFragmentByTag("signInFragment");
+                            getSupportFragmentManager().beginTransaction().detach(frg).attach(frg).commit();
+                        }else if(currentPage.equals("Book") && !currentBeacon.equals(newBeacon)){
+                            Fragment frg = null;
+                            currentBeacon = newBeacon;
+                            frg = getSupportFragmentManager().findFragmentByTag("mapFragment");
+                            getSupportFragmentManager().beginTransaction().detach(frg).attach(frg).commit();
+                        }
+
 
                     }
                 }
@@ -252,27 +321,28 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
                 return screenShotable;
             default:
                 //return replaceFragment(screenShotable, position)
+                currentPage = slideMenuItem.getName();
+                setcurrentPage(slideMenuItem.getName());
+                if(slideMenuItem.getName().equals("Building")){
+                    beaconManager.bind(this);
+                    onBeaconServiceConnect();
+                    mFragmentMgr.beginTransaction().replace(R.id.frameLay,searchFragment,"searchFragment").addToBackStack(null).commit();
+                    String readB = getSharedPreferences("beacon", MODE_PRIVATE)
+                            .getString("readBeacon", "");
+                    Log.i("Share","Share: "+readB );
+                }else if(slideMenuItem.getName().equals("Book")){
+                    beaconManager.bind(this);
+                    mFragmentMgr.beginTransaction().replace(R.id.frameLay,mapFragment,"mapFragment").addToBackStack(null).commit();
+                   // beaconManager.unbind(this);
+                }else if(slideMenuItem.getName().equals("Paint")){
+                    beaconManager.unbind(this);
+                    mFragmentMgr.beginTransaction().replace(R.id.frameLay,signInFragment,"signInFragment").addToBackStack(null).commit();
+
+                }else if(slideMenuItem.getName().equals("Case")){
+                    beaconManager.unbind(this);
+                    mFragmentMgr.beginTransaction().replace(R.id.frameLay,viewInfoFragment,"viewInfoFragment").addToBackStack(null).commit();
+                }
                 Log.i("Screen","hello "+slideMenuItem.getName());
-                onBeaconServiceConnect();
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference docRef = db.collection("ibeacon").document("beacon001");
-                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String des = documentSnapshot.getString("desctiption");
-                        TextView desctiption= (TextView)findViewById(R.id.desctiption);
-                        desctiption.setText(des);
-                        Log.i("database test","Test~~~~~---- "+des);
-                    }
-                });
-
-
-
-
-
-
-
 
 
                 return screenShotable;
@@ -296,5 +366,79 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer,Vi
     @Override
     public void addViewToContainer(View view) {
         linearLayout.addView(view);
+    }
+    public void setcurrentPage(String page){
+        currentPage = page;
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
+    }
+
+    public void setBeaconID(final String name){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("ibeacon").document(name);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot ds) {
+                CourseInfo courseInfo = ds.toObject(CourseInfo.class);
+                if(name=="beacon001"){
+                    Log.i("setBeaconID:","beacon001");
+
+                    setIbeacon001_id1(courseInfo.getId1());
+                    setIbeacon001_id2(courseInfo.getId2());
+                    setIbeacon001_id3(courseInfo.getId3());
+
+                }else if(name=="beacon002"){
+                    Log.i("setBeaconID:","beacon002");
+                    setIbeacon002_id1(courseInfo.getId1());
+                    setIbeacon002_id2(courseInfo.getId2());
+                    setIbeacon002_id3(courseInfo.getId3());
+
+                }else if(name=="beacon003"){
+                    Log.i("setBeaconID:","beacon003");
+                    setIbeacon003_id1(courseInfo.getId1());
+                    setIbeacon003_id2(courseInfo.getId2());
+                    setIbeacon003_id3(courseInfo.getId3());
+                }
+
+            }
+        });
+    }
+
+    public void setIbeacon001_id1(String ibeacon001_id1) {
+        this.ibeacon001_id1 = ibeacon001_id1;
+    }
+
+    public void setIbeacon002_id1(String ibeacon002_id1) {
+        this.ibeacon002_id1 = ibeacon002_id1;
+    }
+
+    public void setIbeacon003_id1(String ibeacon003_id1) {
+        this.ibeacon003_id1 = ibeacon003_id1;
+    }
+
+    public void setIbeacon001_id2(String ibeacon001_id2) {
+        this.ibeacon001_id2 = ibeacon001_id2;
+    }
+
+    public void setIbeacon002_id2(String ibeacon002_id2) {
+        this.ibeacon002_id2 = ibeacon002_id2;
+    }
+
+    public void setIbeacon003_id2(String ibeacon003_id2) {
+        this.ibeacon003_id2 = ibeacon003_id2;
+    }
+
+    public void setIbeacon001_id3(String ibeacon001_id3) {
+        this.ibeacon001_id3 = ibeacon001_id3;
+    }
+
+    public void setIbeacon002_id3(String ibeacon002_id3) {
+        this.ibeacon002_id3 = ibeacon002_id3;
+    }
+
+    public void setIbeacon003_id3(String ibeacon003_id3) {
+        this.ibeacon003_id3 = ibeacon003_id3;
     }
 }

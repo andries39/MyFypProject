@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapFragment"
+    android:background="@drawable/bk"
+    android:id="@+id/frameLayout">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ImageView
+        android:id="@+id/mapImage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        tools:layout_conversion_absoluteHeight="503dp"
+        tools:layout_conversion_absoluteWidth="681dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+
+
+        />
+
+
+
+</FrameLayout>
